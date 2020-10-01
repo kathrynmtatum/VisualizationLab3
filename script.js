@@ -115,8 +115,8 @@ d3.csv('buildings.csv').then(b => {
         let data = d.path[0].__data__;
         //let build = buildings;
         //Image
-        console.log("[https://cdn.glitch.com/94fb472b-7022-4ba1-852a-3030aab52cde%2F1.jpg?v=1601512121978]"+1);
-        document.querySelector(".image").src = "[https://cdn.glitch.com/94fb472b-7022-4ba1-852a-3030aab52cde%2F1.jpg?v=1601512121978]"+1;
+        d3.select('.image')
+				  .attr("src", (d,i) => data.image);
         //Building name
 			  d3.select(".name")
 				  .text(d=>data.building)
