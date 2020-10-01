@@ -24,7 +24,7 @@ d3.csv('cities.csv').then(function(data) {
     euro = info.filter(c => c.eu == true);
     console.log("euro",euro);  
 }).then(function(d) {
-  d3.select('.city-count').text('European cities: ' + euro.length);
+  d3.select('.city-count').text('The Largest European Cities: ' + euro.length);
 //Create svg
   const width = 700;
   const height = 550;
@@ -99,19 +99,47 @@ d3.csv('buildings.csv').then(b => {
   
   //Create bars
   let bars;
-  bars = svg2.selectAll('building-height')
+  bars = svg2.selectAll('.bar')
       .data(buildings)
       .enter()
       .append("rect")
+      .attr("fill", "#00b3b3")
       .attr("width", buildings=>buildings.height_px)
       .attr("height", 40)
       .attr("x", 250)
       .attr("y", function(buildings,i){
         return 45*(i+1);
       })
-  .attr("fill", "blue");
+      .on("click", function(d) {
+        console.log("click")
+        let data = d.path[0].__data__;
+        //let build = buildings;
+        //Image
+        console.log("[https://cdn.glitch.com/94fb472b-7022-4ba1-852a-3030aab52cde%2F1.jpg?v=1601512121978]"+1);
+        document.querySelector(".image").src = "[https://cdn.glitch.com/94fb472b-7022-4ba1-852a-3030aab52cde%2F1.jpg?v=1601512121978]"+1;
+        //Building name
+			  d3.select(".name")
+				  .text(d=>data.building)
+			  //Height
+			  d3.select('.height')
+				  .text(d=>data.height_ft);
+			  //City
+			  d3.select('.city')
+				  .text(d=>data.city);
+        //Country
+			  d3.select('.country')
+				  .text(d=>data.country);
+        //Floors
+			  d3.select('.floors')
+				  .text(d=>data.floors);
+        //Completed
+			  d3.select('.completed')
+				  .text(d=>data.completed);
+        
+  });
   
   //Make labels
+  //Building titles
   let bartext;
   bartext = bars.select("text")
         .data(buildings)
@@ -123,15 +151,19 @@ d3.csv('buildings.csv').then(b => {
         })
         .attr('text-anchor', 'end')
         .text(buildings => buildings.building);
-  bartext.append("text")
-        .text(buldings => buildings.height_ft , "ft")
-        .attr('x', buildings => {
-          return 300;
-        })
-        .attr('y', function(buildings, i) {
-          return 45*(i+1) + 22.5;
-        })
-        .attr('text-anchor', 'end')
-        .text('ft')
-        .attr('fill', 'gray'); 
-});
+  
+  //Height label
+  let heightlabel;
+  heightlabel = bars.select("text")
+      .data(buildings)
+      .enter()
+      .append("text")
+      .attr('x', 340)
+      .attr('y', function(buildings,i){
+        return 45*(i+1)+22.5;
+      })
+      .attr('text-anchor', 'end')
+      .attr('fill', 'white')
+      .text(buildings => buildings.height_ft + " ft");
+
+  });
